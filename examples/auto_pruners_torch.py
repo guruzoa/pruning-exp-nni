@@ -131,7 +131,7 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
     if args.model == 'LeNet':
         model = LeNet().to(device)
         if args.load_pretrained_model:
-            model.load_state_dict(args.pretrained_model_dir)
+            model.load_state_dict(torch.load(args.pretrained_model_dir))
         else:
             optimizer = torch.optim.Adadelta(model.parameters(), lr=1)
             scheduler = StepLR(optimizer, step_size=1, gamma=0.7)
@@ -142,7 +142,7 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
     elif args.model == 'vgg16':
         model = VGG(depth=16).to(device)
         if args.load_pretrained_model:
-            model.load_state_dict(args.pretrained_model_dir)
+            model.load_state_dict(torch.load(args.pretrained_model_dir))
         else:
             optimizer = torch.optim.SGD(model.parameters(), lr=0.01,
                                         momentum=0.9,
@@ -156,7 +156,7 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
     elif args.model == 'resnet18':
         model = models.resnet18(pretrained=False, num_classes=10).to(device)
         if args.load_pretrained_model:
-            model.load_state_dict(args.pretrained_model_dir)
+            model.load_state_dict(torch.load(args.pretrained_model_dir))
         else:
             optimizer = torch.optim.SGD(model.parameters(), lr=0.01,
                                         momentum=0.9,
@@ -170,7 +170,7 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
     elif args.model == 'mobilenet_v2':
         model = models.mobilenet_v2(pretrained=True).to(device)
         if args.load_pretrained_model:
-            model.load_state_dict(args.pretrained_model_dir)
+            model.load_state_dict(torch.load(args.pretrained_model_dir))
 
     if args.save_model:
         torch.save(model.state_dict(), os.path.join(args.experiment_data_dir, 'model_trained.pth'))
