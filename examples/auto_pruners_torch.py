@@ -171,6 +171,8 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
         if args.load_pretrained_model:
             model.load_state_dict(torch.load(args.pretrained_model_dir))
         optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
+    else:
+        raise ValueError("model not recognized")
 
     if args.save_model:
         torch.save(model.state_dict(), os.path.join(args.experiment_data_dir, 'model_trained.pth'))
