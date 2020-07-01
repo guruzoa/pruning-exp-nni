@@ -132,6 +132,7 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
         model = LeNet().to(device)
         if args.load_pretrained_model:
             model.load_state_dict(torch.load(args.pretrained_model_dir))
+            optimizer = torch.optim.Adadelta(model.parameters(), lr=1e-4)
         else:
             optimizer = torch.optim.Adadelta(model.parameters(), lr=1)
             scheduler = StepLR(optimizer, step_size=1, gamma=0.7)
@@ -143,10 +144,9 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
         model = VGG(depth=16).to(device)
         if args.load_pretrained_model:
             model.load_state_dict(torch.load(args.pretrained_model_dir))
+            optimizer = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9, weight_decay=5e-4)
         else:
-            optimizer = torch.optim.SGD(model.parameters(), lr=0.01,
-                                        momentum=0.9,
-                                        weight_decay=5e-4)
+            optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
             scheduler = MultiStepLR(
                 optimizer, milestones=[int(args.pretrain_epochs*0.5), int(args.pretrain_epochs*0.75)], gamma=0.1)
             for epoch in range(args.pretrain_epochs):
@@ -157,10 +157,9 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
         model = models.resnet18(pretrained=False, num_classes=10).to(device)
         if args.load_pretrained_model:
             model.load_state_dict(torch.load(args.pretrained_model_dir))
+            optimizer = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9, weight_decay=5e-4)
         else:
-            optimizer = torch.optim.SGD(model.parameters(), lr=0.01,
-                                        momentum=0.9,
-                                        weight_decay=5e-4)
+            optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
             scheduler = MultiStepLR(
                 optimizer, milestones=[int(args.pretrain_epochs*0.5), int(args.pretrain_epochs*0.75)], gamma=0.1)
             for epoch in range(args.pretrain_epochs):
@@ -171,6 +170,7 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
         model = models.mobilenet_v2(pretrained=True).to(device)
         if args.load_pretrained_model:
             model.load_state_dict(torch.load(args.pretrained_model_dir))
+        optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
 
     if args.save_model:
         torch.save(model.state_dict(), os.path.join(args.experiment_data_dir, 'model_trained.pth'))
