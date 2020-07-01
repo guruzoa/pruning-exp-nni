@@ -24,6 +24,7 @@ taskRoles:
       - mkdir /mnt/nfs-storage
       - mount -t nfs 10.151.40.235:/ /mnt/nfs-storage
       - git clone https://github.com/suiguoxin/pruning-exp-nni/
+      - python3 -m pip install tensorboard
       # SimulatedPruner, l1, Cifar10, vgg16
       # - cd nni && python3 examples/model_compress/auto_pruners_torch.py --pretrain-epochs  100 --pruner SimulatedAnnealingPruner --base-algo l1 --cool-down-rate 0.9 --sparsity 0.1 --dataset cifar10 --fine-tune True --fine-tune-epochs 50 --data-dir /mnt/nfs-storage/users/sgx/cifar10 --experiment-data-dir /mnt/nfs-storage/users/sgx/experiment_data/cifar10/SimualtedAnnealing/01
       
