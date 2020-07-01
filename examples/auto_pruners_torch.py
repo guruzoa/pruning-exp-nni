@@ -181,12 +181,9 @@ def get_trained_model(args, device, train_loader, val_loader, criterion):
 
 def get_dummy_input(args, device):
     if args.dataset == 'mnist':
-        dummy_input = torch.randn(
-            [args.test_batch_size, 1, 28, 28]).to(device)
+        dummy_input = torch.randn([args.test_batch_size, 1, 28, 28]).to(device)
     elif args.dataset in ['cifar10', 'imagenet']:
-        dummy_input = torch.randn(
-            [args.test_batch_size, 3, 32, 32]).to(device)
-
+        dummy_input = torch.randn([args.test_batch_size, 3, 32, 32]).to(device)
     return dummy_input
 
 
