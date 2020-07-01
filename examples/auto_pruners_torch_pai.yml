@@ -1,0 +1,39 @@
+protocolVersion: 2
+name: NetAdaptPruner_cifar10_vgg16_01
+type: job
+jobRetryCount: 0
+prerequisites:
+  - type: dockerimage
+    uri: 'gusui/nni:autopruners'
+    name: docker_image_0
+taskRoles:
+  taskrole:
+    instances: 1
+    completion:
+      minFailedInstances: 1
+      minSucceededInstances: -1
+    taskRetryCount: 0
+    dockerImage: docker_image_0
+    resourcePerInstance:
+      gpu: 1
+      cpu: 4
+      memoryMB: 8192
+    commands:
+      - apt update
+      - apt install -y nfs-common
+      - mkdir /mnt/nfs-storage
+      - mount -t nfs 10.151.40.235:/ /mnt/nfs-storage
+      - git clone https://github.com/suiguoxin/pruning-exp-nni/
+      # SimulatedPruner, l1, Cifar10, vgg16
+      # - cd nni && python3 examples/model_compress/auto_pruners_torch.py --pretrain-epochs  100 --pruner SimulatedAnnealingPruner --base-algo l1 --cool-down-rate 0.9 --sparsity 0.1 --dataset cifar10 --fine-tune True --fine-tune-epochs 50 --data-dir /mnt/nfs-storage/users/sgx/cifar10 --experiment-data-dir /mnt/nfs-storage/users/sgx/experiment_data/cifar10/SimualtedAnnealing/01
+      
+      # NetAdaptPruner, l1, MNIST, LeNet
+      # - cd nni && python3 examples/model_compress/auto_pruners_torch.py --pretrain-epochs 1 --pruner NetAdaptPruner --base-algo l1 --sparsity-per-iteration 0.05 --sparsity 0.1 --dataset mnist --model lenet --fine-tune True --fine-tune-epochs 50 --data-dir /mnt/nfs-storage/users/sgx/cifar10 --experiment-data-dir /mnt/nfs-storage/users/sgx/experiment_data/mnist/NetAdapt/01
+      
+      # NetAdaptPruner, l1, Cifar10, vgg16
+      - cd pruning-exp-nni && python3 examples/auto_pruners_torch.py --dataset cifar10 --model vgg16 --load-pretrained-model True --pretrained-model-dir /mnt/nfs-storage/users/sgx/models/vgg16_cifar10.pth --data-dir /mnt/nfs-storage/users/sgx/cifar10 --pruner NetAdaptPruner --base-algo l1 --sparsity-per-iteration 0.05 --sparsity 0.1 --fine-tune True --fine-tune-epochs 50 --experiment-data-dir /mnt/nfs-storage/users/sgx/experiment_data/cifar10/NetAdapt/01
+      
+      # NetAdaptPruner, l1, imagenet, MobileNetV2
+      # - cd nni && python3 examples/model_compress/auto_pruners_torch.py --pretrain-epochs  NetAdaptPruner --base-algo l1 --sparsity-per-iteration 0.05 --sparsity 0.1 --dataset imagenet --fine-tune True --fine-tune-epochs 10 --data-dir /mnt/nfs-storage/users/sgx/imagenet --experiment-data-dir /mnt/nfs-storage/users/sgx/experiment_data/imagenet/NetAdapt/01
+defaults:
+  virtualCluster: default
