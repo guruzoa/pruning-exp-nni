@@ -1,0 +1,1 @@
+{"config_list": "[{\"op_names\": [\"feature.40\"], \"sparsity\": 0.5708335876464844, \"op_types\": [\"Conv2d\"]}]", "performance": 0.9322}

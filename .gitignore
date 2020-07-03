@@ -3,3 +3,7 @@ __pycache__
 build
 *.egg-info
 setup.pye
+
+*.pth
+
+examples/token.txt

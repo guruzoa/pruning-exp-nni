@@ -1,0 +1,1 @@
+{"performance": 0.9309, "config_list": "[{\"sparsity\": 0.5708335876464844, \"op_types\": [\"Conv2d\"], \"op_names\": [\"feature.40\"]}, {\"sparsity\": 0.15870963202582467, \"op_types\": [\"Conv2d\"], \"op_names\": [\"feature.34\"]}, {\"sparsity\": 0.5160921666961235, \"op_types\": [\"Conv2d\"], \"op_names\": [\"feature.30\"]}]"}
