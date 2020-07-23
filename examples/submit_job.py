@@ -22,8 +22,8 @@ def submit_job(prefix, model, pruner, sparsity, fine_tune_epochs, dataset='cifar
     - cd pruning-exp-nni && python3 examples/auto_pruners_torch.py \
       --model {model} \
       --dataset {dataset}\
-      --load-pretrained-model False \
-      --pretrain-epochs 200 \
+      --load-pretrained-model True \
+      --pretrain-epochs 100 \
       --pretrained-model-dir /mnt/confignfs-data/sgx/experiment_data/{dataset}/{model}/L1FilterPruner/01/model_trained.pth \
       --pruner {pruner} --base-algo l1 --cool-down-rate 0.9 \
       --sparsity {sparsity} \
@@ -41,21 +41,21 @@ def submit_job(prefix, model, pruner, sparsity, fine_tune_epochs, dataset='cifar
 
 
 if __name__ == '__main__':
-#     models = ['resnet18']
-#     pruners = ['L1FilterPruner', 'SimulatedAnnealingPruner', 'NetAdaptPruner', 'AutoCompressPruner']
-#     sparsities = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95', '0.975']
-#     for model in models:
-#         for pruner in pruners:
-#             for sparsity in sparsities:
-#                 submit_job('0723', model, pruner, sparsity, fine_tune_epochs=200)
-
-    models = ['resnet50']
-    pruners = ['L1FilterPruner']
-    sparsities = ['0.1', '0.975']
+    models = ['vgg16']
+    pruners = ['ActivationMeanRankFilterPruner', 'ActivationAPoZRankFilterPruner']#'L1FilterPruner', 'SimulatedAnnealingPruner', 'NetAdaptPruner', 'AutoCompressPruner']
+    sparsities = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '0.95', '0.975']
     for model in models:
         for pruner in pruners:
             for sparsity in sparsities:
-                submit_job('0723', model, pruner, sparsity, fine_tune_epochs=200)
+                submit_job('0723', model, pruner, sparsity, fine_tune_epochs=100)
+
+    # models = ['resnet50']
+    # pruners = ['L1FilterPruner']
+    # sparsities = ['0.1', '0.975']
+    # for model in models:
+    #     for pruner in pruners:
+    #         for sparsity in sparsities:
+    #             submit_job('0723', model, pruner, sparsity, fine_tune_epochs=200)
     
     # # prepare pretrained models
     # models = ['resnet18', 'vgg16']

@@ -14,7 +14,8 @@ from torchvision import datasets, transforms
 from models.mnist.lenet import LeNet
 from models.cifar10.vgg import VGG
 from models.cifar10.resnet import ResNet18, ResNet50
-from nni.compression.torch import L1FilterPruner, L2FilterPruner, SimulatedAnnealingPruner, ADMMPruner, NetAdaptPruner, AutoCompressPruner
+from nni.compression.torch import L1FilterPruner, L2FilterPruner, ActivationMeanRankFilterPruner, ActivationAPoZRankFilterPruner
+from nni.compression.torch import SimulatedAnnealingPruner, ADMMPruner, NetAdaptPruner, AutoCompressPruner
 from nni.compression.torch import ModelSpeedup
 from nni.compression.torch.utils.counter import count_flops_params
 
@@ -248,8 +249,12 @@ def main(args):
 
     if args.pruner == 'L1FilterPruner':
         pruner = L1FilterPruner(model, config_list)
-    if args.pruner == 'L2FilterPruner':
+    elif args.pruner == 'L2FilterPruner':
         pruner = L2FilterPruner(model, config_list)
+    elif args.pruner == 'ActivationMeanRankFilterPruner':
+        pruner = ActivationMeanRankFilterPruner(model, config_list)
+    elif args.pruner == 'ActivationAPoZRankFilterPruner':
+        pruner = ActivationAPoZRankFilterPruner(model, config_list)
     elif args.pruner == 'NetAdaptPruner':
         pruner = NetAdaptPruner(model, config_list, short_term_fine_tuner=short_term_fine_tuner, evaluator=evaluator,
                                 base_algo=args.base_algo, experiment_data_dir=args.experiment_data_dir)
@@ -409,7 +414,7 @@ if __name__ == '__main__':
 
     # pruner
     parser.add_argument('--pruner', type=str, default='SimulatedAnnealingPruner',
-                        help='pruner to use, L1FilterPruner, NetAdaptPruner, SimulatedAnnealingPruner, ADMMPruner or AutoCompressPruner')
+                        help='pruner to use')
     parser.add_argument('--base-algo', type=str, default='l1',
                         help='base pruning algorithm. level, l1 or l2')
     parser.add_argument('--sparsity', type=float, default=0.1,
