@@ -4,7 +4,7 @@ type: job
 jobRetryCount: 0
 prerequisites:
   - type: dockerimage
-    uri: 'gusui/nni:autopruners'
+    uri: 'zhengningxin/nnidev:constrained-pruner'
     name: docker_image_0
 taskRoles:
   taskrole:
@@ -15,8 +15,8 @@ taskRoles:
     taskRetryCount: 0
     dockerImage: docker_image_0
     resourcePerInstance:
-      gpu: 1
-      cpu: 4
+      gpu: 4
+      cpu: 8
       memoryMB: 8192
     commands:
       - apt update
@@ -38,4 +38,13 @@ taskRoles:
         --speed-up True
         --experiment-data-dir /mnt/confignfs-data/sgx/experiment_data/cifar10/resnet18/L1FilterPruner/0975
 defaults:
-  virtualCluster: autosys
+  virtualCluster: default
+extras:
+  com.microsoft.pai.runtimeplugin:
+    - plugin: ssh
+      parameters:
+        jobssh: true
+    - plugin: teamwise_storage
+      parameters:
+        storageConfigNames:
+          - nniblob

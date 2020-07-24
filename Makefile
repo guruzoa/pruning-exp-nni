@@ -89,7 +89,7 @@ easy-install:
 # All-in-one target for developer users
 # Install NNI as well as its dependencies, and update bashrc to set PATH
 .PHONY: dev-easy-install
-dev-easy-install: dev-check-perm
+# dev-easy-install: dev-check-perm
 dev-easy-install: install-dependencies
 dev-easy-install: build
 dev-easy-install: dev-install
