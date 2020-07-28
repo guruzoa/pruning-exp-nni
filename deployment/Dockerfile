@@ -22,7 +22,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     openssh-client \
     openssh-server \
     lsof \
-    python3.5 \
+    python3 \
     python3-dev \
     python3-pip \
     python3-tk \
@@ -68,7 +68,7 @@ RUN python3 -m pip --no-cache-dir install pandas==0.23.4 lightgbm==2.2.2
 #
 # Install NNI
 #
-RUN git clone -b auto-pruners https://github.com/suiguoxin/nni/ && cd nni && rm Makefile && wget https://raw.githubusercontent.com/suiguoxin/pruning-exp-nni/master/Makefile && chmod +x ./install.sh && ./install.sh
+RUN git clone  https://github.com/zheng-ningxin/nni.git  && cd nni && git checkout constraint_pruner_tmp && rm Makefile && wget https://raw.githubusercontent.com/zheng-ningxin/pruning-exp-nni/master/Makefile  && chmod +x ./install.sh && ./install.sh
 # RUN python3 -m pip --no-cache-dir install nni
 
 ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/root/.local/bin:/usr/bin:/bin:/sbin

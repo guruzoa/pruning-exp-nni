@@ -4,7 +4,7 @@ type: job
 jobRetryCount: 0
 prerequisites:
   - type: dockerimage
-    uri: 'zhengningxin/nnidev:constrained-pruner'
+    uri: 'zhengningxin/nnidev:constrained-pruner-v3'
     name: docker_image_0
 taskRoles:
   taskrole:
@@ -15,9 +15,9 @@ taskRoles:
     taskRetryCount: 0
     dockerImage: docker_image_0
     resourcePerInstance:
-      gpu: 4
-      cpu: 8
-      memoryMB: 8192
+      gpu: 1
+      cpu: 5
+      memoryMB: 51200
     commands:
       - apt update
       - apt install -y nfs-common
