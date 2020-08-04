@@ -17,6 +17,7 @@ def submit_job(prefix, model, pruner, sparsity, pretrain_epochs, fine_tune_epoch
     commands = "- apt update \
     - apt install -y nfs-common \
     - cd /nni/examples/model_compress && git pull\
+    - export AZCOPY_CRED_TYPE=\"Anonymous\"; azcopy copy \"https://nennistorage.blob.core.windows.net/nni/yugzhan/imagenet/all/?sv=2019-12-12&ss=b&srt=sco&sp=rwdlacx&se=2020-08-28T14:42:31Z&st=2020-07-27T06:42:31Z&spr=https&sig=EQCe7PQHP9lqflE6PVQpwJpQ9arDStkseBvqm9RakQU%3D\" \"/mnt\" --overwrite=prompt --check-md5 FailIfDifferent --from-to=BlobLocal --blob-type Detect --recursive; export AZCOPY_CRED_TYPE=\"\"; \
     - python3 -m pip install tensorboard thop \
     - python3 auto_pruners_torch.py \
       --model {model} \
