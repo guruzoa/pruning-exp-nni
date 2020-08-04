@@ -38,7 +38,7 @@ taskRoles:
         --speed-up True
         --experiment-data-dir /mnt/confignfs-data/sgx/experiment_data/cifar10/resnet18/L1FilterPruner/0975
 defaults:
-  virtualCluster: default
+  virtualCluster: nni
 extras:
   com.microsoft.pai.runtimeplugin:
     - plugin: ssh
@@ -48,3 +48,5 @@ extras:
       parameters:
         storageConfigNames:
           - nniblob
+          - confignfs-data
+          - confignfs-user
