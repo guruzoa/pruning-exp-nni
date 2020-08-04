@@ -4,7 +4,7 @@ type: job
 jobRetryCount: 0
 prerequisites:
   - type: dockerimage
-    uri: 'zhengningxin/nnidev:constrained-pruner-v3'
+    uri: 'zhengningxin/nnidev:constraint-pruner-benchmark'
     name: docker_image_0
 taskRoles:
   taskrole:
