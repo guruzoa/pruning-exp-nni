@@ -1,0 +1,51 @@
+protocolVersion: 2
+name: L1Filter_cifar10_resnet18_0975_
+type: job
+jobRetryCount: 0
+prerequisites:
+  - type: dockerimage
+    uri: 'zhengningxin/nnidev:constraint-pruner-benchmark'
+    name: docker_image_0
+taskRoles:
+  taskrole:
+    instances: 1
+    completion:
+      minFailedInstances: 1
+      minSucceededInstances: -1
+    taskRetryCount: 0
+    dockerImage: docker_image_0
+    resourcePerInstance:
+      gpu: 1
+      cpu: 3
+      memoryMB: 51200
+    commands:
+      - apt update
+      - apt install -y nfs-common
+      - mkdir /mnt/confignfs-data
+      - mount -t nfs 10.151.40.40:/data/ /mnt/confignfs-data
+      - git clone https://github.com/suiguoxin/pruning-exp-nni/
+      - python3 -m pip install tensorboard thop
+      - >-
+        cd pruning-exp-nni && python3 examples/auto_pruners_torch.py
+        --model resnet18
+        --dataset cifar10 
+        --load-pretrained-model True 
+        --pretrained-model-dir /mnt/confignfs-data/sgx/experiment_data/cifar10/resnet18/L1FilterPruner/01/model_trained.pth
+        --pruner L1FilterPruner --base-algo l1 --cool-down-rate 0.9 
+        --sparsity 0.975 
+        --fine-tune True --fine-tune-epochs 50
+        --data-dir /mnt/confignfs-data/sgx/cifar10 
+        --speed-up True
+        --experiment-data-dir /mnt/confignfs-data/sgx/experiment_data/cifar10/resnet18/L1FilterPruner/0975
+defaults:
+  virtualCluster: default
+extras:
+  com.microsoft.pai.runtimeplugin:
+    - plugin: ssh
+      parameters:
+        jobssh: true
+    - plugin: teamwise_storage
+      parameters:
+        storageConfigNames:
+          - configblob
+          - confignfs-data

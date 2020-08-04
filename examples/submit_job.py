@@ -5,12 +5,12 @@ import time
 url = 'https://rr.openpai.org/rest-server/api/v2/jobs'
 
 with open('examples/v100_token.txt', 'r') as file:
-    auth_token = file.read()
+    auth_token = file.read().strip()
 
 headers = {'Authorization': 'Bearer ' + auth_token, 'Content-Type': 'text/plain'}
 
-def submit_job(prefix, model, pruner, sparsity, pretrain_epochs, fine_tune_epochs, dataset='cifar10', constrained=False):
-    with open("examples/auto_pruners_torch_pai_ne_template.yml", 'r') as stream:
+def submit_job(prefix, model, pruner, sparsity, pretrain_epochs, fine_tune_epochs, dataset='cifar10', constrained=True):
+    with open("examples/auto_pruners_torch_pai_rr_template.yml", 'r') as stream:
         job_config = yaml.safe_load(stream)
 
     
@@ -34,7 +34,7 @@ def submit_job(prefix, model, pruner, sparsity, pretrain_epochs, fine_tune_epoch
           dataset=dataset, model=model, pruner=pruner, sparsity=sparsity, sparsity_str=str(sparsity).replace('.', ''), pretrain_epochs=pretrain_epochs, fine_tune_epochs=fine_tune_epochs, constrained=str(constrained))
     
     job_config["taskRoles"]["taskrole"]["commands"] = commands.split('- ')
-    job_config["name"] = "{prefix}_{model}_{dataset}_{pruner}_{sparsity_str}".format(prefix=prefix, dataset=dataset, model=model, pruner=pruner, sparsity=sparsity, sparsity_str=str(sparsity).replace('.', ''))
+    job_config["name"] = "{prefix}_{model}_{dataset}_{pruner}_{sparsity_str}_{constrained}".format(prefix=prefix, dataset=dataset, model=model, pruner=pruner, sparsity=sparsity, sparsity_str=str(sparsity).replace('.', ''), constrained=str(constrained))
 
     print(yaml.dump(job_config))
     r = requests.post(url, headers=headers, data=yaml.dump(job_config))
@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
     models = ['resnet18']
     pruners = ['AutoCompressPruner']
-    sparsities = ['0.1', '0.3', '0.5', '0.7', '0.9', '0.95', '0.975']
+    sparsities = ['0.1', '0.3', '0.5' ,'0.7' ,'0.9', '0.95', '0.975']
     for model in models:
         for pruner in pruners:
             for sparsity in sparsities:
