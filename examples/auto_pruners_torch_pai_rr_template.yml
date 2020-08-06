@@ -47,5 +47,5 @@ extras:
     - plugin: teamwise_storage
       parameters:
         storageConfigNames:
-          - configblob
+          - nniblob
           - confignfs-data
