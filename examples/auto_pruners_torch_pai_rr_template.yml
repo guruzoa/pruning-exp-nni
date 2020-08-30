@@ -4,7 +4,7 @@ type: job
 jobRetryCount: 0
 prerequisites:
   - type: dockerimage
-    uri: 'zhengningxin/nnidev:constraint-pruner-benchmark'
+    uri: 'zhengningxin/nnidev:v2.0'
     name: docker_image_0
 taskRoles:
   taskrole:
@@ -38,7 +38,7 @@ taskRoles:
         --speed-up True
         --experiment-data-dir /mnt/confignfs-data/sgx/experiment_data/cifar10/resnet18/L1FilterPruner/0975
 defaults:
-  virtualCluster: default
+  virtualCluster: nni
 extras:
   com.microsoft.pai.runtimeplugin:
     - plugin: ssh
