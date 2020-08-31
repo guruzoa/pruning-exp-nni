@@ -57,8 +57,8 @@ if __name__ == '__main__':
     # models = ['resnet18', 'resnet50']
     models = ['mobilenet_v2', 'resnet18', 'resnet50']
     # pruners = ['AutoCompressPruner' ]
-    pruners = ['L1FilterPruner' ]
-    # pruners = ['AttentionPruner' ]
+    # pruners = ['L1FilterPruner' ]
+    pruners = ['AttentionPruner' ]
     # pruners = [ 'SimulatedAnnealingPruner']
     LRs = [0.001]
     # sparsities = ['0.1', '0.3', '0.5' ,'0.7' ,'0.9', '0.95', '0.975', '0.98', '0.99', '0.993', '0.995', '0.997', '0.999']
@@ -67,8 +67,9 @@ if __name__ == '__main__':
     for model in models:
         for pruner in pruners:
             for sparsity in sparsities:
-                for no_depen in [True]: 
+                for no_depen in [False]: 
                     for lr in LRs:
-                        for constrained in [False]:
+                        for constrained in [True]:
                             # submit_job('0812', model, pruner, sparsity, pretrain_epochs=0, fine_tune_epochs=20, dataset='imagenet', lr=lr, constrained=constrained, load_checkpoint=False)
-                            submit_job('0829', model, pruner, sparsity, pretrain_epochs=0, fine_tune_epochs=200, dataset='cifar10', load_checkpoint=True, constrained=constrained, no_depen=no_depen)
+                            # submit_job('0830', model, pruner, sparsity, pretrain_epochs=0, fine_tune_epochs=200, dataset='cifar10', load_checkpoint=True, constrained=constrained, no_depen=no_depen)
+                            submit_job('0831_attention_from_sratch', model, pruner, sparsity, pretrain_epochs=0, fine_tune_epochs=200, dataset='cifar10', load_checkpoint=False, constrained=constrained, no_depen=no_depen, lr=0.1)
